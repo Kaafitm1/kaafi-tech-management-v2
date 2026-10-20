@@ -149,13 +149,13 @@ export async function PUT(
 
   const permissions = emptyPermissions();
 
-  for (const module of MODULES) {
-    const supplied = body.permissions[module];
+  for (const moduleKey of MODULES) {
+    const supplied = body.permissions[moduleKey];
 
     if (supplied === undefined) continue;
 
     if (!isObject(supplied)) {
-      return NextResponse.json({ error: `Rukhsadaha ${module} ma saxna.` }, { status: 400 });
+      return NextResponse.json({ error: `Rukhsadaha ${moduleKey} ma saxna.` }, { status: 400 });
     }
 
     for (const action of Object.keys(supplied)) {
@@ -164,10 +164,10 @@ export async function PUT(
       }
 
       if (typeof supplied[action] !== "boolean") {
-        return NextResponse.json({ error: `Rukhsadda ${module}.${action} waa inay noqotaa true ama false.` }, { status: 400 });
+        return NextResponse.json({ error: `Rukhsadda ${moduleKey}.${action} waa inay noqotaa true ama false.` }, { status: 400 });
       }
 
-      (permissions[module] as Record<string, boolean>)[action] =
+      (permissions[moduleKey] as Record<string, boolean>)[action] =
         supplied[action] as boolean;
     }
   }
